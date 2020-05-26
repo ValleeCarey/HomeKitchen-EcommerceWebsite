@@ -101,3 +101,7 @@ h6 {
 .hidden {
   display: none !important;
 }
+
+.bold {
+  font-weight: bold;
+}
