@@ -155,7 +155,7 @@
       submitFormData();
     });
 
-  // Submit user data to backend
+  // Submit form data to backend
   function submitFormData() {
     console.log("Payment button clicked");
 
@@ -187,6 +187,23 @@
       shippingInfo.name = form.name.value;
       shippingInfo.email = form.email.value;
     }
+
+    // Send POST data
+    var url = "/process_order/";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body: JSON.stringify({ form: userFormData, shipping: shippingInfo }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        alert("Transaction completed");
+        window.location.href = "{% url 'store' %}";
+      });
   }
 </script>
 
