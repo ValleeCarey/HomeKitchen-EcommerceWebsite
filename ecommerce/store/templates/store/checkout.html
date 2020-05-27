@@ -198,6 +198,7 @@
       },
       body: JSON.stringify({ form: userFormData, shipping: shippingInfo }),
     })
+      // Redirect user the homepage once transaction is complete
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
