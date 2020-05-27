@@ -1,14 +1,28 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
+
 from .models import *
 
 # Create function-based views.
 
 
 def store(request):
+
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(
+            customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:
+        # Create empty cart for now if user is not logged in
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = order['get_cart_items']
+
     products = Product.objects.all()
-    context = {'products': products}
+    context = {'products': products, 'cartItems': cartItems}
     return render(request, 'store/store.html', context)
 
 
@@ -59,9 +73,9 @@ def updateItem(request):
         order=order, product=product)
 
     if action == 'add':
-        orderItem.quantity = {orderItem.quantity + 1}
+        orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
-        orderItem.quantity = {orderItem.quantity - 1}
+        orderItem.quantity = (orderItem.quantity - 1)
 
     orderItem.save()
 
