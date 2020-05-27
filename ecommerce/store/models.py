@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 # Build models.
 
+# Model for customer
+
 
 class Customer(models.Model):
     user = models.OneToOneField(
@@ -13,6 +15,8 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+# Model for product
+
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
@@ -22,6 +26,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+# Product image
 
     @property
     def imageURL(self):
@@ -30,6 +35,8 @@ class Product(models.Model):
         except:
             url = ''
         return url
+
+# Model for orders
 
 
 class Order(models.Model):
@@ -42,29 +49,32 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
 
+# Condition set if the item does not require shipping
     @property
     def shipping(self):
+        shipping = False
         orderitems = self.orderitem_set.all()
 
         for i in orderitems:
             if i.product.digital == False:
                 shipping = True
-
-        shipping = False
-
         return shipping
+# Get the cart total
 
     @property
     def get_cart_total(self):
         orderitems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderitems])
         return total
+# Get the cart items
 
     @property
     def get_cart_items(self):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
+
+# Get the order items
 
 
 class OrderItem(models.Model):
@@ -79,6 +89,8 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+
+# Model for shipping address
 
 
 class ShippingAddress(models.Model):
