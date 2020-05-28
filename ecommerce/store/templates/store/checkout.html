@@ -141,6 +141,10 @@
 
   // When the form is submitted, hide the form button and display payment info wrapper
   var form = document.getElementById("form");
+
+  //csrftoken = form.getElementsByTagName("input")[0].value;
+  //console.log("Newtoken:", form.getElementsByTagName("input")[0].value);
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     console.log("Form submitted...");
@@ -201,6 +205,11 @@
       .then((data) => {
         console.log("Success:", data);
         alert("Transaction completed");
+
+        // Reset cookies once transaction is complete
+        cart = {};
+        document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
+
         window.location.href = "{% url 'store' %}";
       });
   }
