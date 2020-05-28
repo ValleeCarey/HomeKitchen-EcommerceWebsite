@@ -50,15 +50,15 @@ class Order(models.Model):
         return str(self.id)
 
 # Condition set if the item does not require shipping
-    @property
-    def shipping(self):
-        shipping = False
-        orderitems = self.orderitem_set.all()
+    # @property
+    # def shipping(self):
+        #shipping = False
+        #orderitems = self.orderitem_set.all()
 
-        for i in orderitems:
-            if i.product.digital == False:
-                shipping = True
-        return shipping
+        # for i in orderitems:
+        # if i.product.digital == False:
+        #shipping = True
+        # return shipping
 # Get the cart total
 
     @property
